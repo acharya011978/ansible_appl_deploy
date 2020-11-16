@@ -1,2 +1,6 @@
 ---
-# handlers file for /etc/ansible/roles/CreateDevopsUser
+ - name: restart ssh
+   service:
+     name: sshd
+     state: restarted
+     

@@ -1,0 +1,3 @@
+---
+# vars file for /etc/ansible/roles/jenkins
+JAVA_HOME: /usr/lib/jvm/openjdk-1.8.0

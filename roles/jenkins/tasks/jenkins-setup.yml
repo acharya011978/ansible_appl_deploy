@@ -1,0 +1,42 @@
+---
+- name: Configure Jenkin Server
+  hosts: jenkins
+  become: true
+  sudo: yes
+  ignore error : yes
+
+  tasks:
+  - name: Enable EPEL repository
+    shell: "sudo amazon-linux-extras install epel -y"
+    state: present
+  
+  - name: Install Basic packages
+    package:
+      name: ['vim','bash-completion','tmux','tree','htop','wget','unzip','curl','git']
+      state: present
+
+  - name: Install Java open JDK 8
+    yum:
+      name: java-1.8.0-openjdk
+      state: present 
+    
+  - name: Yum Update
+    yum:
+      update_cache: yes    
+    state: present 
+    
+  - name: copy jenkins setup from jenkins to /etc/yum.repos.d/
+    wget:
+      src: "{{jenkins_src_url}}"
+      dest: "{{jenkins_dest}}"
+    state: present
+    
+  - name: yum install jenkins  
+    yum: 
+      name: jenkins
+      state: present
+
+
+     
+
+

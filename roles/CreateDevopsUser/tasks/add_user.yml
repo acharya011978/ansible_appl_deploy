@@ -1,0 +1,50 @@
+---
+ - hosts: all
+   become: true
+   become_user: root
+   gather_facts: false
+
+ - tasks: 
+     include_role: 
+       name: add_devops_user
+       tasks_from: add_user.yml
+
+ - name: add a new user - devops
+   user:
+     name={{username}}
+     password={{ devops_password }}
+
+ - name: Add devops user to sudoers / visudo
+   copy:
+     content: "{{username}}  ALL=(ALL)  NOPASSWD: ALL" 
+     dest: "/etc/sudoers.d/{{username}}"
+
+
+            
+ - name: Deploy ssh key
+   authorized_key:
+     user: {{username}}
+     state: present
+     key: "{{ lookup('file', 'id_rsa.pub') }}"
+
+
+
+ - name: disable  password authentication
+   lineinfile:
+     dest=/etc/ssh/sshd_config
+     regexp='^PasswordAuthentication'
+     line='PasswordAuthentication no'
+     state=present
+     backup=yes
+                       
+ - name: disable root login
+   lineinfile: 
+     dest=/etc/ssh/sshd_config
+     regex='^PermitRootLogin'
+     line='PermitRootLogin no'
+     state=present
+     backup=yes 
+
+       
+ - notify:
+     restart ssh

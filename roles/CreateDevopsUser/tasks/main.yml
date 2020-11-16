@@ -1,2 +1,11 @@
 ---
-# tasks file for /etc/ansible/roles/CreateDevopsUser
+ - hosts: all
+   become: true
+   become_user: root
+   gather_facts: false
+
+ - tasks: 
+     include_role: 
+       name: add_devops_user
+       tasks_from: add_user.yml
+# include AddUser.yml

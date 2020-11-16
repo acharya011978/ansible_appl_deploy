@@ -1,38 +1,19 @@
-Role Name
-=========
+Ansible-Sample-Application-Deployment
+This repository will contain sample code to deploy the sample application on linux instance
 
-A brief description of the role goes here.
+Directory Structure
+configs - contain environment specific variable
 
-Requirements
-------------
+inventories - contains inventory file for each environment
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+groups_vars - contains common variables across environments
 
-Role Variables
---------------
+a) add_devops_user - This folder will have files related to the setup of initial user
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+main.yml - This is the main file which will execute roles in the playbook
 
-Dependencies
-------------
+How to Run the Playbook
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+ansible-playbook main.yml -i inventories/dev/hosts --user ec2-user --key-file /home/ec2-user/playbooks/ansible_aut.pem -e '@configs/dev.yml'
 
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+ansible-playbook main.yml -i inventories/dev/hosts --user devops --key-file /home/devops/.ssh/id_rsa -e '@configs/dev.yml'

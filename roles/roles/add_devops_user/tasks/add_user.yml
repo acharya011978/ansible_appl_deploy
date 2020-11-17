@@ -4,26 +4,25 @@
      name={{username}}
      password={{ devops_password }}
 
- - name: Add devops user to sudoers / visudo
+ - name: Add devops user to sudoers
    copy:
-     content: "{{username}}  ALL=(ALL)  NOPASSWD: ALL" 
-     dest: "/etc/sudoers.d/{{username}}"
+        dest: "/etc/sudoers.d/{{username}}"
+        content: "{{username}}  ALL=(ALL)  NOPASSWD: ALL" 
 
-
-            
+                
  - name: Deploy ssh key
-   authorized_key:
-     user: {{username}}
-     state: present
-     key: "{{ lookup('file', 'devops_key.pub') }}"
+   authorized_key: user={{username}}
+                   key="{{ lookup('file', '~/.ssh/devops_key.pub') }}"
+                   state=present
 
 
-
- - name: disable  password authentication
+ - name: disable  password authentication  and enable PubkeyAuthentication 
    lineinfile:
      dest=/etc/ssh/sshd_config
      regexp='^PasswordAuthentication'
      line='PasswordAuthentication no'
+     regexp='^PubkeyAuthentication '
+     line='PubkeyAuthentication yes' 
      state=present
      backup=yes
                        
@@ -36,5 +35,5 @@
      backup=yes 
 
        
- - notify:
-     restart ssh
+   notify:
+      - restart ssh

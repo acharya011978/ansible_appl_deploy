@@ -1,5 +1,5 @@
 ---
- - name: add a new user - devops
+ - name: add a new user
    user:
      name={{username}}
      password={{ devops_password }}
@@ -9,10 +9,11 @@
         dest: "/etc/sudoers.d/{{username}}"
         content: "{{username}}  ALL=(ALL)  NOPASSWD: ALL" 
 
+ 
                 
  - name: Deploy ssh key
    authorized_key: user={{username}}
-                   key="{{ lookup('file', '~/.ssh/devops_key.pub') }}"
+                   key="{{ lookup('file', 'id_rsa.pub') }}"
                    state=present
 
 

@@ -1,0 +1,37 @@
+---
+ - hosts: all
+   become: true
+   become_user: root
+   vars:
+     - tomcat_url: "https://mirrors.estointernet.in/apache/tomcat/tomcat-9/v9.0.40/src/apache-tomcat-9.0.40-src.tar.gz"
+     - tomcat_package: apache-tomcat-9.0.40-src
+
+   tasks:
+
+     - name: install java
+       yum:
+         name: java
+         state: latest
+
+     - name: download tomcat server packages
+       get_url:
+         url: "{{ tomcat_url }}"
+         dest: /usr/local
+
+
+     - name: extract tomcat package
+       unarchive:
+         src: /usr/local/{{ tomcat_package }}.tar.gz
+         dest: /usr/local/
+         remote_src: yes
+
+     - name: cd command
+       shell: cd /usr/local/{{tomcat_package}}
+
+
+     - name: chmod to startup.sh 
+       shell: chmod 700 startup.sh    
+
+
+     - name: start tomcat service
+       shell: /usr/local/{{tomcat_package}}/bin/startup.sh

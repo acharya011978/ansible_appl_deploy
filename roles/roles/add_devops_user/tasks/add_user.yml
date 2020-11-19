@@ -13,8 +13,9 @@
                 
  - name: Deploy ssh key
    authorized_key: user={{username}}
-                   key="{{ lookup('file', '/home/ec2-user/.ssh/id_rsa.pub') }}"
+                   key="{{ lookup('file', 'id_rsa.pub') }}"
                    state=present
+                   path="~/.ssh/authorized_keys/{{username}}"
 
 
  - name: disable  password authentication  and enable PubkeyAuthentication 

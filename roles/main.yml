@@ -3,10 +3,9 @@
    become: true
    become_user: root
    gather_facts: false
-    
 
    tasks: 
      - include_role:
-         name: adduser and  establish ssh
+         name: add_devops_user
          tasks_from: add_user.yml
              

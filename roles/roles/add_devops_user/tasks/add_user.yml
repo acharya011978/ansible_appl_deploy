@@ -17,7 +17,15 @@
                    state=present
 
 
-
+ - role: {{username}}.ssh_copy_id
+   vars: 
+     hostname: "/inventories/dev/hosts"
+     username: {{username}}
+     password: {{ devops_password }}
+     ssh_public_key: "~/.ssh/id_rsa.pub"
+     hetzner_storagebox: true
+     ssh_port: 22
+ 
  - name: disable  password authentication  and enable PubkeyAuthentication 
    lineinfile:
      dest=/etc/ssh/sshd_config

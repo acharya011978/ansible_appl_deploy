@@ -27,19 +27,5 @@
          dest: /usr/local
 
 
-     - name: extract tomcat package
-       unarchive:
-         src: /usr/local/{{ tomcat_package }}.tar.gz
-         dest: /usr/local/
-         remote_src: yes
 
-     - name: cd command
-       shell: cd /usr/local/{{tomcat_package}}
-
-
-     - name: chmod to startup.sh 
-       shell: chmod 700 startup.sh    
-
-
-     - name: start tomcat service
-       shell: /usr/local/{{tomcat_package}}/bin/startup.sh
+ 

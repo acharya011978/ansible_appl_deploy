@@ -7,14 +7,16 @@
      - req_java: java-1.8.0-openjdk.x86_64 
      - req_tomcat_version: 9.0.40
      - tomcat_url: "https://mirrors.estointernet.in/apache/tomcat/tomcat-{{ req_tomcat_version.split('.')[0] }}/v{{ req_tomcat_version }}/bin/apache-tomcat-{{ req_tomcat_version }}.tar.gz"
-     - tomcat_package: apache-tomcat-9.0.40-src
+     - tomcat_package: apache-tomcat-{{req_tomcat_version}}.tar.gz
+     - tomcat_port: 8090
+
 
    tasks:
 
-     - name: install java
-       yum:
-         name: java
-         state: latest
+#     - name: install java
+#       yum:
+#         name: java
+#         state: latest
          
 #     - alternatives: 
 #         name: java
@@ -24,13 +26,19 @@
      - debug: var=tomcat_url
        
 
-     - name: download tomcat server packages 
-       get_url:
-         url: "{{ tomcat_url }}"
-         dest: /usr/local
+#     - name: download tomcat server packages 
+#       get_url:
+#         url: "{{ tomcat_url }}"
+#         dest: /usr/local
 
-#   - name: extract tomcat package 
-#         unarchive: 
-#           src: /usr/local/{{ tomcat_package }}.tar.gz 
-#           dest: /usr/local/
-#           remote_src: yes
+     - debug: var=tomcat_package   
+
+#     - name: extract tomcat package 
+#       unarchive: 
+#          src: /usr/local/apache-tomcat-{{req_tomcat_version}}.tar.gz 
+#          dest: /usr/local/
+#          remote_src: yes
+
+     - name: start tomcat service
+       shell: nohup /usr/local/apache-tomcat-{{req_tomcat_version}}/bin/startup.sh
+

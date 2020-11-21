@@ -3,7 +3,10 @@
    become: true
    become_user: root
    vars:
-     - tomcat_url: "https://mirrors.estointernet.in/apache/tomcat/tomcat-9/v9.0.40/src/apache-tomcat-9.0.40-src.tar.gz"
+     - set_java: java-1.8.0-openjdk-1.8.0.265.b01-1.amzn2.0.1.x86_64
+     - req_java: java-1.8.0-openjdk.x86_64 
+     - req_tomcat_version: 9.0.40
+     - tomcat_url: "https://mirrors.estointernet.in/apache/tomcat/tomcat-{{req_tomcat_version.split('.')[0]}}/v{{req_tomcat_version}}/bin/apache-tomcat-{{req_tomcat_version}}.tar.tz
      - tomcat_package: apache-tomcat-9.0.40-src
 
    tasks:
@@ -12,6 +15,11 @@
        yum:
          name: java
          state: latest
+         
+     - alternatives: 
+         name: java
+         link: /usr/bin/java
+         path: /usr/lib/jvm/{{ set_java }}/bin/java
 
      - name: download tomcat server packages
        get_url:

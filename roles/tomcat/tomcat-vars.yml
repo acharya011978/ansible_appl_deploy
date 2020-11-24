@@ -1,0 +1,7 @@
+---
+set_java: java-1.8.0-openjdk-1.8.0.265.b01-1.amzn2.0.1.x86_64
+req_java: java-1.8.0-openjdk.x86_64
+req_tomcat_version: 9.0.40
+tomcat_url: "https://mirrors.estointernet.in/apache/tomcat/tomcat-{{ req_tomcat_version.split('.')[0] }}/v{{ req_tomcat_version }}/bin/apache-tomcat-{{ req_tomcat_version }}.tar.gz"
+tomcat_port: 8090
+env: staging

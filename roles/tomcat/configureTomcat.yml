@@ -2,17 +2,8 @@
  - hosts: all
    become: true
    become_user: root
-   vars:
-     - set_java: "java-1.8.0-openjdk-1.8.0.265.b01-1.amzn2.0.1.x86_64"
-     - req_java: java-1.8.0-openjdk.x86_64 
-     - req_tomcat_version: 9.0.40
-     - tomcat_url: "https://mirrors.estointernet.in/apache/tomcat/tomcat-{{ req_tomcat_version.split('.')[0] }}/v{{ req_tomcat_version }}/bin/apache-tomcat-{{ req_tomcat_version }}.tar.gz"
-     - tomcat_package: apache-tomcat-{{req_tomcat_version}}.tar.gz
-     - tomcat_port: 8090
-     - role_manager: '<role rolename="manager-gui" />'
-     - role_manager-script= '<role rolename="manager-script" />'
-     - user_admin: '<user username="admin" password="raswaa@1" roles="manager-gui, manager-script" />'
-     - env: staging
+   vars_files:
+     - tomcat-vars.yml
 
    tasks:
 
@@ -45,12 +36,13 @@
 #     - name: start tomcat service
 #       shell: nohup /usr/local/apache-tomcat-{{req_tomcat_version}}/bin/startup.sh
 
-     - name: template file to replace serveer.xml  on remote host
+     - name: template file to replace server.xml  on remote host
        template: 
          src: server.xml.j2
          dest: /usr/local/apache-tomcat-{{req_tomcat_version}}/conf/server.xml
 
-     - name: template file to replace tomcat-users.xml
-       template:
-          src: tomcat-users.xml.j2
-          dest: /usr/local/apache-tomcat-{{req_tomcat_version}}/conf/tomcat-user.xml
+     - name: add lines in tomcat-users.xml
+       lineinfile:
+         path: /usr/local/apache-tomcat-{{req_tomcat_version}}/conf/tomcat-users.xml
+         line: <role rolename="manager-gui" /> 
+         create: yes
